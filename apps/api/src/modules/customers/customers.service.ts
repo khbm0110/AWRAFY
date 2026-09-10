@@ -20,7 +20,7 @@ export class CustomersService {
     });
     if (existing) return existing;
 
-    return db.customer.create({ data });
+    return db.customer.create({ data: { ...data, tenantId } });
   }
 
   async findOne(tenantId: string, id: string) {
