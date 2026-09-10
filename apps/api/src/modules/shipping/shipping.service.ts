@@ -14,7 +14,7 @@ export class ShippingService {
   // --- Carriers (إعداد التاجر لشركات الشحن ديالو) — ShippingCarrier معزولة (forTenant) ---
 
   async createCarrier(tenantId: string, dto: CreateCarrierDto) {
-    return this.prisma.forTenant(tenantId).shippingCarrier.create({ data: dto });
+    return this.prisma.forTenant(tenantId).shippingCarrier.create({ data: { ...dto, tenantId } });
   }
 
   async findAllCarriers(tenantId: string) {
