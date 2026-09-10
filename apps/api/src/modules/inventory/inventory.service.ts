@@ -60,7 +60,8 @@ export class InventoryService {
 
       await tx.stockAdjustment.create({
         data: {
-          variantId: dto.variantId, // tenantId تزاد أوتوماتيك عبر forTenant
+          tenantId,
+          variantId: dto.variantId,
           quantityChange: dto.quantityChange,
           reason: dto.reason,
           note: dto.note,
