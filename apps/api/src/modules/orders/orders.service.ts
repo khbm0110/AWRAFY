@@ -62,13 +62,16 @@ export class OrdersService {
       return sum + Number(price) * item.quantity;
     }, 0);
 
-    // خطوة 4: transaction وحدة عبر forTenant().$transaction — order + order_items
-    // + stock decrement سوا. إذا decrementForOrder رمى استثناء، Prisma كيرجع
-    // كل حاجة للخلف تلقائيا.
-    const order = await db.$transaction(async (tx) => {
+    // خطوة 4: transaction وحدة — order + order_items + stock decrement سوا.
+    // ⚠️ كتستعمل this.prisma.$transaction (base, ماشي forTenant().$transaction)
+    // باش نوع tx يكون متوافق مع Prisma.TransactionClient اللي كتنتظرو
+    // inventoryService.decrementForOrder — tenantId كتزاد يدويا حيت الـ
+    // forTenant() extension ماشي مفعّلة هنا.
+    const order = await this.prisma.$transaction(async (tx) => {
       const created = await tx.order.create({
         data: {
-          customerId: customer.id, // tenantId تزاد أوتوماتيك عبر forTenant
+          tenantId,
+          customerId: customer.id,
           total,
           idempotencyKey: dto.idempotencyKey,
           items: {
