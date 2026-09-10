@@ -32,6 +32,7 @@ export class ProductsService {
     return db.product.create({
       data: {
         ...productData,
+        tenantId,
         currency: dto.currency ?? 'MAD',
         status: dto.status ?? 'draft',
         variants: variants?.length
