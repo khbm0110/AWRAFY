@@ -8,7 +8,7 @@ export class CategoriesService {
 
   async create(tenantId: string, dto: CreateCategoryDto) {
     // forTenant() كيزيد tenantId أوتوماتيك فـdata.create — انظر prisma.service.ts
-    return this.prisma.forTenant(tenantId).category.create({ data: dto });
+    return this.prisma.forTenant(tenantId).category.create({ data: { ...dto, tenantId } });
   }
 
   async findAll(tenantId: string) {
