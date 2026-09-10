@@ -101,7 +101,8 @@ export class BillingService {
 
     return this.prisma.forTenant(tenantId).platformInvoice.create({
       data: {
-        subscriptionId: subscription.id, // tenantId تزاد أوتوماتيك عبر forTenant
+        tenantId,
+        subscriptionId: subscription.id,
         amount: plan.priceMAD,
         periodStart,
         periodEnd,
